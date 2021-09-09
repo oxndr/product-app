@@ -20,7 +20,7 @@ export default function ProductInputForm({ onSubmit }) {
         id: Date.now(),
         imageUrl: '',
         name: '',
-        count: 1,
+        count: '1',
         sizeH: 10,
         sizeW: 10,
         weight: 10,
