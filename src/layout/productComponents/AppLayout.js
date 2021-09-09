@@ -12,33 +12,17 @@ import {
   Avatar,
   Heading,
   Text,
-  Breadcrumb,
-  BreadcrumbItem,
+  Link as LinkC,
+  Button,
 } from '@chakra-ui/react';
-import { HamburgerIcon, CloseIcon, ChevronRightIcon } from '@chakra-ui/icons';
+import { HamburgerIcon, CloseIcon } from '@chakra-ui/icons';
 import { Link } from 'react-router-dom';
+import paths from '../../pages/paths';
 
 export default function AppLayout({ children }) {
   const { isOpen, onOpen, onClose } = useDisclosure();
 
-  //   const links = [
-  //     {
-  //       id: new Date(),
-  //       path: paths.newSong,
-  //       title: 'New song',
-  //     },
-  //   ];
-
-  //   const menuLinks = [
-  //     user
-  //       ? {
-  //           id: new Date(),
-  //           icon: <FiUser />,
-  //           path: generatePath(paths.profile, { id: user._id }),
-  //           title: 'Profile',
-  //         }
-  //       : null,
-  //   ].filter(Boolean);
+  const user = false;
 
   return (
     <>
@@ -58,42 +42,34 @@ export default function AppLayout({ children }) {
               onClick={isOpen ? onClose : onOpen}
             />
             <HStack spacing={8} alignItems="center">
-              {/* <Link
-                // to={paths.home}
-                style={{ color: 'inherit', textDecoration: 'inherit' }}
-                             </Link> */}
               <Heading as="h2" size="md">
-                Product List 🍕
+                <Link to={paths.home}>Product List 🍕</Link>
               </Heading>
               <HStack
                 as="nav"
                 spacing={4}
                 display={{ base: 'none', md: 'flex' }}
               >
-                {/* {links.map((link) => {
-                  return (
-                    <Link
-                      key={link.title}
-                      to={link.path}
-                      style={{ color: 'inherit', textDecoration: 'inherit' }}
-                    >
-                      <Button variant="link" color="black">
-                        {link.title}
-                      </Button>
-                    </Link>
-                  );
-                })} */}
+                {user ? (
+                  <Button>Logout</Button>
+                ) : (
+                  <Link to={paths.login}>
+                    <Button>Login</Button>
+                  </Link>
+                )}
               </HStack>
             </HStack>
             <Flex alignItems="center">
               <Text mr={3}>Some user</Text>
               <Wrap>
                 <WrapItem>
-                  <Avatar
-                    size="md"
-                    name="Some user"
-                    src="https://img.freepik.com/free-photo/cheerful-surprised-young-asian-woman-looks-big-appetizing-ice-cream-smiles-pleasantly-enjoys-eating-something-tasty-break-diet-dressed-fashionable-clothes-isolated-pink-wall_273609-49906.jpg?size=626&ext=jpg"
-                  />
+                  <LinkC href="https://github.com/oxndr" isExternal>
+                    <Avatar
+                      size="md"
+                      name="Some user"
+                      src="https://img.freepik.com/free-photo/cheerful-surprised-young-asian-woman-looks-big-appetizing-ice-cream-smiles-pleasantly-enjoys-eating-something-tasty-break-diet-dressed-fashionable-clothes-isolated-pink-wall_273609-49906.jpg?size=626&ext=jpg"
+                    />
+                  </LinkC>
                 </WrapItem>
               </Wrap>
             </Flex>
@@ -102,19 +78,13 @@ export default function AppLayout({ children }) {
           {isOpen ? (
             <Box pb={4} display={{ md: 'none' }}>
               <Stack as="nav" spacing={4}>
-                {/* {links.map((link) => {
-                  return (
-                    <Link
-                      key={link.id}
-                      to={link.path}
-                      style={{ color: 'inherit', textDecoration: 'inherit' }}
-                    >
-                      <Button variant="link" color="black">
-                        {link.title}
-                      </Button>
-                    </Link>
-                  );
-                })} */}
+                {user ? (
+                  <Button>Logout</Button>
+                ) : (
+                  <Link to={paths.login}>
+                    <Button>Login</Button>
+                  </Link>
+                )}
               </Stack>
             </Box>
           ) : null}
@@ -122,19 +92,6 @@ export default function AppLayout({ children }) {
       </Box>
 
       <Container maxW="container.lg" pb={100}>
-        <Breadcrumb
-          mt={5}
-          spacing="8px"
-          separator={<ChevronRightIcon color="gray.500" />}
-        >
-          <BreadcrumbItem>
-            <Link to="/products">Home</Link>
-          </BreadcrumbItem>
-
-          <BreadcrumbItem>
-            <Link to="/details">Products details</Link>
-          </BreadcrumbItem>
-        </Breadcrumb>
         {children}
       </Container>
     </>

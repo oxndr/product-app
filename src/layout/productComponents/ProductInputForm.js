@@ -17,7 +17,7 @@ export default function ProductInputForm({ onSubmit }) {
   return (
     <Formik
       initialValues={{
-        id: Date.now(),
+        id: '',
         imageUrl: '',
         name: '',
         count: '1',

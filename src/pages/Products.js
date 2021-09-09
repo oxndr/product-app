@@ -1,5 +1,5 @@
 /* eslint-disable prettier/prettier */
-import { ChakraProvider, Flex } from '@chakra-ui/react';
+import { Flex } from '@chakra-ui/react';
 import { useMemo, useState } from 'react';
 import AppLayout from '../layout/productComponents/AppLayout';
 import ModalWindow from '../layout/productComponents/ModalWindow';

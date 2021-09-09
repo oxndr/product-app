@@ -14,9 +14,13 @@ import { IoMdResize } from 'react-icons/io';
 import { GiWeight } from 'react-icons/gi';
 import { AiFillExclamationCircle } from 'react-icons/ai';
 import { ImListNumbered } from 'react-icons/im';
+import { useHistory } from 'react-router-dom';
 import ModalWindow from './ModalWindow';
+import paths from '../../pages/paths';
 
 export default function ProductCard({ product, remove }) {
+  const router = useHistory();
+
   return (
     <Center py={4}>
       <Box
@@ -39,7 +43,12 @@ export default function ProductCard({ product, remove }) {
               {product.name}
             </Heading>
             <Stack>
-              <Button variant="outline" colorScheme="green" size="xs">
+              <Button
+                onClick={() => router.push(`${paths.home}${product.id}`)}
+                variant="outline"
+                colorScheme="green"
+                size="xs"
+              >
                 Details
               </Button>
               <ModalWindow
