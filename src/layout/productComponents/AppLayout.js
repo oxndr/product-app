@@ -12,8 +12,11 @@ import {
   Avatar,
   Heading,
   Text,
+  Breadcrumb,
+  BreadcrumbItem,
 } from '@chakra-ui/react';
-import { HamburgerIcon, CloseIcon } from '@chakra-ui/icons';
+import { HamburgerIcon, CloseIcon, ChevronRightIcon } from '@chakra-ui/icons';
+import { Link } from 'react-router-dom';
 
 export default function AppLayout({ children }) {
   const { isOpen, onOpen, onClose } = useDisclosure();
@@ -119,6 +122,19 @@ export default function AppLayout({ children }) {
       </Box>
 
       <Container maxW="container.lg" pb={100}>
+        <Breadcrumb
+          mt={5}
+          spacing="8px"
+          separator={<ChevronRightIcon color="gray.500" />}
+        >
+          <BreadcrumbItem>
+            <Link to="/products">Home</Link>
+          </BreadcrumbItem>
+
+          <BreadcrumbItem>
+            <Link to="/details">Products details</Link>
+          </BreadcrumbItem>
+        </Breadcrumb>
         {children}
       </Container>
     </>
