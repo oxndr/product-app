@@ -9,7 +9,6 @@ import {
   ModalHeader,
   ModalOverlay,
   ModalFooter,
-  useToast,
 } from '@chakra-ui/react';
 import { useRef } from 'react';
 
@@ -25,7 +24,6 @@ export default function ModalForm({
 
   const initialRef = useRef();
   const finalRef = useRef();
-  const toast = useToast();
 
   return (
     <>

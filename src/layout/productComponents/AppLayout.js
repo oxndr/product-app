@@ -1,3 +1,5 @@
+/* eslint-disable import/extensions */
+/* eslint-disable import/no-unresolved */
 // import { generatePath, Link } from 'react-router-dom';
 import {
   Box,
@@ -17,13 +19,16 @@ import {
 } from '@chakra-ui/react';
 import { HamburgerIcon, CloseIcon } from '@chakra-ui/icons';
 import { Link } from 'react-router-dom';
+import { useContext } from 'react';
+import { useAuthState } from 'react-firebase-hooks/auth';
 import paths from '../../pages/paths';
+import { Context } from '../../index';
 
 export default function AppLayout({ children }) {
   const { isOpen, onOpen, onClose } = useDisclosure();
 
-  const user = false;
-
+  const { auth } = useContext(Context);
+  const [user] = useAuthState(auth);
   return (
     <>
       <Box
@@ -51,7 +56,13 @@ export default function AppLayout({ children }) {
                 display={{ base: 'none', md: 'flex' }}
               >
                 {user ? (
-                  <Button>Logout</Button>
+                  <Button
+                    onClick={() => {
+                      auth.signOut();
+                    }}
+                  >
+                    Logout
+                  </Button>
                 ) : (
                   <Link to={paths.login}>
                     <Button>Login</Button>
@@ -59,20 +70,20 @@ export default function AppLayout({ children }) {
                 )}
               </HStack>
             </HStack>
-            <Flex alignItems="center">
-              <Text mr={3}>Some user</Text>
-              <Wrap>
-                <WrapItem>
+            <Wrap>
+              <WrapItem>
+                {user ? (
+                  <Avatar size="md" src={user.photoURL} />
+                ) : (
                   <LinkC href="https://github.com/oxndr" isExternal>
                     <Avatar
                       size="md"
-                      name="Some user"
                       src="https://img.freepik.com/free-photo/cheerful-surprised-young-asian-woman-looks-big-appetizing-ice-cream-smiles-pleasantly-enjoys-eating-something-tasty-break-diet-dressed-fashionable-clothes-isolated-pink-wall_273609-49906.jpg?size=626&ext=jpg"
                     />
                   </LinkC>
-                </WrapItem>
-              </Wrap>
-            </Flex>
+                )}
+              </WrapItem>
+            </Wrap>
           </Flex>
 
           {isOpen ? (

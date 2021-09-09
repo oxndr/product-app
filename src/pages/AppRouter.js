@@ -1,9 +1,13 @@
 import { BrowserRouter, Switch, Route, Redirect } from 'react-router-dom';
+import { useAuthState } from 'react-firebase-hooks/auth';
+import { useContext } from 'react';
 import paths from './paths';
 import { privateRoutes, publicRoutes } from './routes';
+import { Context } from '../index';
 
 export default function AppRouter() {
-  const user = false;
+  const { auth } = useContext(Context);
+  const [user] = useAuthState(auth);
 
   return user ? (
     <BrowserRouter>
