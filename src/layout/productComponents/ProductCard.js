@@ -11,8 +11,10 @@ import {
   Button,
 } from '@chakra-ui/react';
 import { IoMdResize } from 'react-icons/io';
+import { FiMoreHorizontal } from 'react-icons/fi';
+import { GrUpdate } from 'react-icons/gr';
 import { GiWeight } from 'react-icons/gi';
-import { AiFillExclamationCircle } from 'react-icons/ai';
+import { AiFillExclamationCircle, AiFillDelete } from 'react-icons/ai';
 import { ImListNumbered } from 'react-icons/im';
 import { useHistory } from 'react-router-dom';
 import ModalWindow from './ModalWindow';
@@ -49,13 +51,21 @@ export default function ProductCard({ product, remove }) {
                 colorScheme="green"
                 size="xs"
               >
-                Details
+                <FiMoreHorizontal />
+              </Button>
+              <Button
+                onClick={() => router.push(`${paths.home}${product.id}`)}
+                variant="outline"
+                colorScheme="blackAlpha"
+                size="xs"
+              >
+                <GrUpdate />
               </Button>
               <ModalWindow
                 variant="outline"
                 colorScheme="red"
                 size="xs"
-                btnLabel="Delete"
+                btnLabel={<AiFillDelete />}
                 header="Delete product"
                 footerBtn
                 onClickSubmit={() => remove(product)}
