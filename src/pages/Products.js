@@ -1,6 +1,6 @@
 /* eslint-disable no-unused-expressions */
 import { Flex, Center, Spinner } from '@chakra-ui/react';
-import { useContext, useMemo, useState } from 'react';
+import { useContext, useEffect, useMemo, useState } from 'react';
 import { useCollectionData } from 'react-firebase-hooks/firestore';
 import firebase from 'firebase';
 import AppLayout from '../layout/productComponents/AppLayout';
@@ -12,42 +12,35 @@ import SelectItem from '../layout/productComponents/SelectItem';
 import { Context } from '../index';
 
 function Products() {
-  const [products, setProducts] = useState([
-    {
-      id: 1,
-      imageUrl:
-        'https://i.insider.com/57c99b2ab996eb26008b5d51?width=1000&format=jpeg&auto=webp',
-      name: 'Coca cola',
-      count: 6,
-      sizeW: '0.5',
-      sizeH: '0.2',
-      weight: '200',
-    },
-    {
-      id: 2,
-      imageUrl: 'https://i.ytimg.com/vi/Qy1Ih8yTBco/maxresdefault.jpg',
-      name: 'Sprite',
-      count: 1,
-      sizeW: '0.1',
-      sizeH: '0.4',
-      weight: '300',
-    },
-    {
-      id: 3,
-      imageUrl:
-        'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTpPRk89-QFWNWxZy5-dgKv6QrujQWZMu0oBQ&usqp=CAU',
-      name: 'Fanta',
-      count: 10,
-      sizeW: '0.5',
-      sizeH: '0.5',
-      weight: '100',
-    },
-  ]);
+  const [products, setProducts] = useState([]);
+
+  useEffect(() => {
+    const fetchData = async () => {
+      const db = firebase.firestore();
+      const data = await db.collection('products').orderBy('createdAt').get();
+      setProducts(data.docs.map((doc) => doc.data()));
+    };
+    fetchData();
+  }, [setProducts]);
 
   const { firestore } = useContext(Context);
   const [data, loading] = useCollectionData(
     firestore.collection('products').orderBy('createdAt')
   );
+
+  const addProductToDb = (values) => {
+    firestore.collection('products').add({
+      id: new Date().getTime().toString(),
+      imageUrl: values.imageUrl,
+      name: values.name,
+      count: values.count,
+      sizeW: values.sizeW,
+      sizeH: values.sizeH,
+      weight: values.weight,
+      createdAt: firebase.firestore.FieldValue.serverTimestamp(),
+    });
+  };
+
   const [selectedSort, setSelectedSort] = useState('');
 
   const sortedProducts = useMemo(() => {
@@ -85,6 +78,8 @@ function Products() {
               onSubmit={(values, actions) => {
                 setTimeout(() => {
                   actions.setSubmitting(false);
+
+                  // To see added products on page immediately
                   setProducts([
                     ...products,
                     {
@@ -97,16 +92,8 @@ function Products() {
                       weight: values.weight,
                     },
                   ]);
-                  firestore.collection('products').add({
-                    id: new Date().getTime().toString(),
-                    imageUrl: values.imageUrl,
-                    name: values.name,
-                    count: values.count,
-                    sizeW: values.sizeW,
-                    sizeH: values.sizeH,
-                    weight: values.weight,
-                    createdAt: firebase.firestore.FieldValue.serverTimestamp(),
-                  });
+
+                  addProductToDb(values);
                 }, 1000);
               }}
             />
@@ -127,15 +114,14 @@ function Products() {
         </Flex>
       )}
 
-      {products.length ? (
-        <ProductListGrid>
-          <ProductList remove={removeProduct} products={sortedProducts} />
-          <ProductList remove={removeProduct} products={data || []} />
-        </ProductListGrid>
-      ) : (
+      {!products.length && !loading ? (
         <Flex justify="center">
           Nothing a products, click on Create new product that create one ↖ 😉
         </Flex>
+      ) : (
+        <ProductListGrid>
+          <ProductList remove={removeProduct} products={sortedProducts} />
+        </ProductListGrid>
       )}
     </AppLayout>
   );
