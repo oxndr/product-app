@@ -13,7 +13,6 @@ import {
   WrapItem,
   Avatar,
   Heading,
-  Text,
   Link as LinkC,
   Button,
 } from '@chakra-ui/react';
@@ -48,7 +47,7 @@ export default function AppLayout({ children }) {
             />
             <HStack spacing={8} alignItems="center">
               <Heading as="h2" size="md">
-                <Link to={paths.home}>Product List 🍕</Link>
+                <Link to={paths.home}>Product App 🍕</Link>
               </Heading>
               <HStack
                 as="nav"
